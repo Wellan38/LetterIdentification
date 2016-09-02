@@ -13,8 +13,8 @@ public class NeuralNetwork {
         Locale.setDefault(Locale.ENGLISH);
     }
     
-    public final static int NB_INPUT = 2;
-    public final static int NB_HIDDEN = 3;
+    public final static int NB_INPUT = 6*6;
+    public final static int NB_HIDDEN = 8*8;
     public final static int NB_OUTPUT = 1;
  
     final boolean isTrained = false;
@@ -23,12 +23,12 @@ public class NeuralNetwork {
     private List<Neuron> hiddenLayer = new ArrayList<Neuron>();
     private List<Neuron> outputLayer = new ArrayList<Neuron>();
     Neuron bias = new Neuron();
-    final int randomWeightMultiplier = 1;
+    final int randomWeightMultiplier = -1;
  
     final Double epsilon = 0.00000000001;
  
-    final Double learningRate = 0.9;
-    final Double momentum = 0.7;
+    final Double learningRate = 0.1;
+    final Double momentum = 0.05;
  
     Double[] inputs;
  
@@ -45,6 +45,8 @@ public class NeuralNetwork {
          * Create all neurons and connections Connections are created in the
          * neuron class
          */
+        
+        bias.setOutput(-1.);
         
         //Input layer
         for (int j = 0; j < NB_INPUT; j++) {
@@ -213,7 +215,7 @@ public class NeuralNetwork {
         }
     }
  
-    Double train(Double[] signals, Double[] target) {
+    public Double train(Double[] signals, Double[] target) {
         
         inputs = signals;
         expectedOutputs = target;
@@ -232,12 +234,12 @@ public class NeuralNetwork {
         
         applyBackpropagation(expectedOutputs);
         
-        System.out.println("out = " + output[0] + ", expected = " + expectedOutputs[0] + ", error = " + error);
+        //System.out.println("out = " + output[0] + ", expected = " + expectedOutputs[0] + ", error = " + error);
 
         return error;
     }
     
-    public void test(Double[] signals)
+    public Double[] test(Double[] signals)
     {
         inputs = signals;
         
@@ -248,7 +250,7 @@ public class NeuralNetwork {
         output = getOutput();
         resultOutputs = output;
         
-        System.out.println("out = " + output[0]);
+        return output;
     }
  
     String weightKey(int neuronId, int conId) {

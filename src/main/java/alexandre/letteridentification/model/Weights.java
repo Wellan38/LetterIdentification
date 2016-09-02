@@ -30,6 +30,9 @@ public class Weights implements Serializable
         this.weigths = weigths;
     }
 
+    public Weights() {
+    }
+
     public String getId() {
         return id;
     }

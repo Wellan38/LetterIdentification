@@ -78,8 +78,11 @@ public class JpaUtil {
     public static void fermerEntityManager() {
         log("fermeture du contexte de persistance");
         EntityManager em = threadLocalEntityManager.get();
-        em.close();
-        threadLocalEntityManager.set(null);
+        if (em != null)
+        {
+            em.close();
+            threadLocalEntityManager.set(null);
+        }
     }
 
     /**

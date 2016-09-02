@@ -11,7 +11,7 @@ public class Neuron {
     static int counter = 0;
     final public int id;  // auto increment, starts at 0
     Synapse biasConnection;
-    final Double bias = -1.;
+    final Double bias = 1.;
     Double output;
      
     List<Synapse> Inconnections = new ArrayList<Synapse>();
@@ -31,7 +31,7 @@ public class Neuron {
             Neuron leftNeuron = con.getFromNeuron();
             Double weight = con.getWeight();
             Double a = leftNeuron.getOutput(); //output from previous layer
-             
+            
             s = s + (weight*a);
         }
         s = s + (biasConnection.getWeight()*bias);

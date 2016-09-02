@@ -57,7 +57,7 @@ public class WeightsDao {
         EntityManager em = JpaUtil.obtenirEntityManager();
         List<Weights> weights = null;
         try {
-            Query q = em.createQuery("SELECT a FROM Apprenant a");
+            Query q = em.createQuery("SELECT w FROM Weights w");
             weights = (List<Weights>) q.getResultList();
         }
         catch(Exception e) {
