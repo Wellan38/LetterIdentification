@@ -81,7 +81,7 @@ public class Main {
             serv.saveWeights(net, letter);
         }
         
-        
+        /*
         NeuralNetwork net = serv.createNetwork('A');
         
         BufferedImage imA = ImageIO.read(new File("C:\\Users\\alexa\\OneDrive\\Documents\\NetBeansProjects\\LetterIdentificationServer\\src\\main\\webapp\\Training\\Z\\5.png"));
@@ -105,6 +105,7 @@ public class Main {
         }
         
         System.out.println(serv.testNetwork('A', inA));
+        */
     }
 }
 

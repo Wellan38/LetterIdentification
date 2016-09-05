@@ -6,7 +6,9 @@
 package alexandre.letteridentification.service;
 
 import alexandre.letteridentification.dao.JpaUtil;
+import alexandre.letteridentification.dao.StatisticsDao;
 import alexandre.letteridentification.dao.WeightsDao;
+import alexandre.letteridentification.model.Statistics;
 import alexandre.letteridentification.model.Weights;
 import alexandre.letteridentification.util.NeuralNetwork;
 import alexandre.letteridentification.util.Neuron;
@@ -17,10 +19,8 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -501,5 +501,83 @@ public class Service
         }
         
         return res;
+    }
+    
+    public Statistics createStatistics(Character letter) throws Throwable
+    {
+        if (findStatisticsByLetter(letter) != null)
+        {
+            return null;
+        }
+        else
+        {
+            Statistics s = new Statistics("STATS-" + letter, letter);
+            s.setNumber_first(0);
+            s.setNumber_second(0);
+            s.setNumber_third(0);
+            s.setNumber_more(0);
+            
+            JpaUtil.creerEntityManager();
+            
+            StatisticsDao dao = new StatisticsDao();
+            
+            JpaUtil.ouvrirTransaction();
+            
+            dao.create(s);
+            
+            JpaUtil.validerTransaction();
+            
+            JpaUtil.fermerEntityManager();
+            
+            return s;
+        }
+    }
+    
+    public Statistics findStatisticsByLetter(Character letter) throws Throwable
+    {
+        JpaUtil.creerEntityManager();
+        
+        StatisticsDao dao = new StatisticsDao();
+        
+        List<Statistics> stats = dao.findAll();
+        
+        for (Statistics s : stats)
+        {
+            if (s.getLetter().equals(letter))
+            {
+                return s;
+            }
+        }
+        
+        return null;
+    }
+    
+    public Statistics updateStatistics(Statistics s, Integer number_first, Integer number_second, Integer number_third, Integer number_more) throws Throwable
+    {
+        if (s == null)
+        {
+            return null;
+        }
+        else
+        {
+            s.setNumber_first(number_first);
+            s.setNumber_second(number_second);
+            s.setNumber_third(number_third);
+            s.setNumber_more(number_more);
+            
+            JpaUtil.creerEntityManager();
+            
+            StatisticsDao dao = new StatisticsDao();
+            
+            JpaUtil.ouvrirTransaction();
+            
+            s = dao.update(s);
+            
+            JpaUtil.validerTransaction();
+            
+            JpaUtil.fermerEntityManager();
+            
+            return s;
+        }
     }
 }
